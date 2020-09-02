@@ -1,4 +1,3 @@
-# 
 
 my_arr = ["hi", "world", "how", "are", "you", "lorem", "ipsum", "set"]
 
