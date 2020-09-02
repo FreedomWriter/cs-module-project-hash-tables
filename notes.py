@@ -62,9 +62,32 @@ my_arr2 = [None] * 20
 
 
 # PUT
+
+### Pseodocode
+### 1. Hash the key
+### 2. Take the hash and modulo it with len of array
+### 3. Go to index and put in value
 our_hash = UTF8_hash('supercalifragilisticexpialidocious') ## 364
-idx = our_hash % len(my_arr2) ## 364
+idx = our_hash % len(my_arr2) ## 3
 my_arr2[idx] = 'Mary Poppins' # gives an index error ( 364 is greater than the index capacity, 20)
 
 print(my_arr2)
 
+# GET
+### Pseodocode
+### 1. Hash the key
+### 2. Take the hash and modulo it with len of array
+### 3. Go to index and get out the value
+our_hash_again = UTF8_hash('supercalifragilisticexpialidocious')
+our_index_again = our_hash_again % len(my_arr2)
+
+print(my_arr2[our_index_again])
+
+## Time Complexity?
+### Same for get and put
+### Linerat in lenght of string/key
+#### constant time in lenght of array <----- This is the thing we pay attention to
+
+## Misc
+### Python has a built in hash fn - hash()
+### SHA256 has never had a collision - but too slow for a hash table
