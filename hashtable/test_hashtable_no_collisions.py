@@ -59,6 +59,7 @@ class TestHashTable(unittest.TestCase):
         ht.delete("key-2")
         ht.delete("key-1")
         ht.delete("key-0")
+        ht.delete("kesxdgay-0")
 
         return_value = ht.get("key-0")
         self.assertTrue(return_value is None)

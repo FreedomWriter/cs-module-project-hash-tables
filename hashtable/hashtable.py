@@ -121,7 +121,10 @@ class HashTable:
         """
         # Your code here
         idx = self.hash_index(key)
-        self.hash_table_list[idx] = None
+        if self.hash_table_list[idx] is None:
+            print(f"{key} does not exist")
+        else:
+            self.hash_table_list[idx] = None
 
 
 
