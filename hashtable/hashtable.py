@@ -27,7 +27,7 @@ class HashTable:
         else:
             self.capacity = MIN_CAPACITY
 
-        self.hash_table_list = [HashTableEntry(None, None)] * self.capacity
+        self.hash_table_list = [None] * self.capacity
 
 
     def get_num_slots(self):
@@ -108,32 +108,8 @@ class HashTable:
         """
         # Your code here
         idx = self.hash_index(key)
-        cur_node = self.hash_table_list[idx]
-        traversing = True
-
-        while traversing: 
-            # does the cur_node have a key?
-            if cur_node.key:
-                # is the cur_node's key equal to the key being passed?
-                if cur_node.key != key:
-                    # is there a next node?
-                    if cur_node.next:
-                        cur_node = cur_node.next
-                    # no next - create the new entry
-                    else:
-                        cur_node.next = HashTableEntry(key, value)
-                        traversing = False
-                # if the key's are the same, overwrite the value
-                else:
-                    cur_node.value = value
-                    traversing = False
-            # if the cur_node does not have a key
-            else:
-                cur_node.key = key
-                cur_node.value = value
-                traversing = False
+        self.hash_table_list[idx] = value
       
-
 
     def delete(self, key):
         """
@@ -145,21 +121,8 @@ class HashTable:
         """
         # Your code here
         idx = self.hash_index(key)
-        cur_node = self.hash_table_list[idx]
-        traversing = True
+        self.hash_table_list[idx] = None
 
-        while traversing: 
-            if cur_node.key:
-                if cur_node.key == key:
-                    cur_node.value = None
-                    return None
-                else:
-                    if cur_node.next:
-                        cur_node = cur_node.next
-                    else:
-                        return None
-            else: 
-                return f"Warning: No {key} found in hash table"
 
 
     def get(self, key):
@@ -172,16 +135,7 @@ class HashTable:
         """
         # Your code here
         idx = self.hash_index(key)
-        cur_node = self.hash_table_list[idx]
-        traversing = True
-
-        while traversing:
-            if cur_node.key:
-                if cur_node.key == key:
-                    return cur_node.value
-                else:
-                    cur_node = cur_node.next
-        return None
+        return self.hash_table_list[idx]
 
     def resize(self, new_capacity):
         """
