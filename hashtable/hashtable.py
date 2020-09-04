@@ -88,6 +88,25 @@ class HashTable:
         Implement this, and/or FNV-1.
         """
         # Your code here
+        # unsigned long
+        # hash(unsigned char *str)
+        # {
+        #     unsigned long hash = 5381;
+        #     int c;
+        #     while (c = *str++)
+        #         hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
+        #     return hash;
+        # }
+        # make a variable equal to 5381
+        ## interate over the bytes of our key
+        ## for each byte,
+        ### shift the variable and add the byte 
+
+        hashed_result = 5381
+        key_bytes = key.encode()
+        for byte in key_bytes:
+            hashed_result = ((hashed_result<< 5) + hashed_result) + byte
+        return hashed_result
 
 
     def hash_index(self, key):
@@ -95,8 +114,8 @@ class HashTable:
         Take an arbitrary key and return a valid integer index
         between within the storage capacity of the hash table.
         """
-        return self.fnv1(key) % self.capacity
-        # return self.djb2(key) % self.capacity
+        # return self.fnv1(key) % self.capacity
+        return self.djb2(key) % self.capacity
 
     def put(self, key, value):
         """
