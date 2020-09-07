@@ -28,6 +28,7 @@ class HashTable:
             self.capacity = MIN_CAPACITY
 
         self.hash_table_list = [HashTableEntry(None, None)] * self.capacity
+        self.num_of_els = 0
 
 
     def get_num_slots(self):
@@ -51,6 +52,8 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        slots = self.get_num_slots()
+        return self.num_of_els / slots
 
 
     def fnv1(self, key):
@@ -98,6 +101,7 @@ class HashTable:
         return self.fnv1(key) % self.capacity
         # return self.djb2(key) % self.capacity
 
+
     def put(self, key, value):
         """
         Store the value with the given key.
@@ -110,6 +114,8 @@ class HashTable:
         idx = self.hash_index(key)
         cur_node = self.hash_table_list[idx]
         traversing = True
+        self.num_of_els += 1
+
 
         while traversing: 
             # does the cur_node have a key?
@@ -134,7 +140,6 @@ class HashTable:
                 traversing = False
       
 
-
     def delete(self, key):
         """
         Remove the value stored with the given key.
@@ -147,6 +152,7 @@ class HashTable:
         idx = self.hash_index(key)
         cur_node = self.hash_table_list[idx]
         traversing = True
+        self.num_of_els -= 1
 
         while traversing: 
             if cur_node.key:
@@ -191,6 +197,29 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        old_arr = self.hash_table_list
+        self.hash_table_list = [HashTableEntry(None, None)] * int(new_capacity)
+
+        for el in old_arr:
+            self.put(el.key, el.value)
+            cur_node = el
+            
+            while cur_node:
+                self.put(cur_node.key, cur_node.value)
+                cur_node = cur_node.next
+             
+            ## Verbose implementation
+            # if el.next:
+            #     traversing = True
+            #     cur_node = el.next
+            #     while traversing:
+            #         self.put(cur_node.key, cur_node.value)
+            #         if cur_node.next:
+            #             cur_node = cur_node.next
+            #         else:
+            #             traversing = False
+                
+
 
 
 
