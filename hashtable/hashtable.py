@@ -138,6 +138,13 @@ class HashTable:
                 cur_node.key = key
                 cur_node.value = value
                 traversing = False
+
+        # load_factor = self.get_load_factor()
+        # print(load_factor)
+        # if load_factor > .7:
+        #     return self.resize(self.capacity * 2)
+        # elif load_factor < .2:
+        #     return self.resize(self.capacity / 2)
       
 
     def delete(self, key):
@@ -196,7 +203,7 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        # Your code here - O(n)
         old_arr = self.hash_table_list
         self.hash_table_list = [HashTableEntry(None, None)] * int(new_capacity)
 
