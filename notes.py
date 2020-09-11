@@ -1,4 +1,3 @@
-
 my_arr = ["hi", "world", "how", "are", "you", "lorem", "ipsum", "set"]
 
 # o(n) search - best case O(log n) if sorted and can use binary

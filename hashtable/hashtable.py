@@ -22,6 +22,13 @@ class HashTable:
 
     def __init__(self, capacity):
         # Your code here
+        if capacity >= MIN_CAPACITY:
+            self.capacity = capacity
+        else:
+            self.capacity = MIN_CAPACITY
+
+        self.hash_table_list = [HashTableEntry(None, None)] * self.capacity
+        self.num_of_els = 0
 
 
     def get_num_slots(self):
@@ -35,6 +42,7 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        return len(self.hash_table_list)
 
 
     def get_load_factor(self):
@@ -44,6 +52,8 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        slots = self.get_num_slots()
+        return self.num_of_els / slots
 
 
     def fnv1(self, key):
@@ -53,8 +63,26 @@ class HashTable:
         Implement this, and/or DJB2.
         """
 
-        # Your code here
+        # Your code here 
 
+        # algorithm fnv-1 is
+        # hash := FNV_offset_basis do
+
+        # for each byte_of_data to be hashed
+        #     hash := hash × FNV_prime
+        #     hash := hash XOR byte_of_data
+
+        # return hash
+        
+        offset_basis = 14695981039346656037
+        FNV_prime =  1099511628211
+        my_hash = offset_basis
+
+        for byte_of_data in key:
+            my_hash = my_hash * FNV_prime
+            my_hash = my_hash ^ ord(byte_of_data)
+        
+        return my_hash
 
     def djb2(self, key):
         """
@@ -70,8 +98,9 @@ class HashTable:
         Take an arbitrary key and return a valid integer index
         between within the storage capacity of the hash table.
         """
-        #return self.fnv1(key) % self.capacity
-        return self.djb2(key) % self.capacity
+        return self.fnv1(key) % self.capacity
+        # return self.djb2(key) % self.capacity
+
 
     def put(self, key, value):
         """
@@ -82,7 +111,41 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        idx = self.hash_index(key)
+        cur_node = self.hash_table_list[idx]
+        traversing = True
+        self.num_of_els += 1
 
+
+        while traversing: 
+            # does the cur_node have a key?
+            if cur_node.key:
+                # is the cur_node's key equal to the key being passed?
+                if cur_node.key != key:
+                    # is there a next node?
+                    if cur_node.next:
+                        cur_node = cur_node.next
+                    # no next - create the new entry
+                    else:
+                        cur_node.next = HashTableEntry(key, value)
+                        traversing = False
+                # if the key's are the same, overwrite the value
+                else:
+                    cur_node.value = value
+                    traversing = False
+            # if the cur_node does not have a key
+            else:
+                cur_node.key = key
+                cur_node.value = value
+                traversing = False
+
+        # load_factor = self.get_load_factor()
+        # print(load_factor)
+        # if load_factor > .7:
+        #     return self.resize(self.capacity * 2)
+        # elif load_factor < .2:
+        #     return self.resize(self.capacity / 2)
+      
 
     def delete(self, key):
         """
@@ -93,6 +156,23 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        idx = self.hash_index(key)
+        cur_node = self.hash_table_list[idx]
+        traversing = True
+        self.num_of_els -= 1
+
+        while traversing: 
+            if cur_node.key:
+                if cur_node.key == key:
+                    cur_node.value = None
+                    return None
+                else:
+                    if cur_node.next:
+                        cur_node = cur_node.next
+                    else:
+                        return None
+            else: 
+                return f"Warning: No {key} found in hash table"
 
 
     def get(self, key):
@@ -104,7 +184,17 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        idx = self.hash_index(key)
+        cur_node = self.hash_table_list[idx]
+        traversing = True
 
+        while traversing:
+            if cur_node.key:
+                if cur_node.key == key:
+                    return cur_node.value
+                else:
+                    cur_node = cur_node.next
+        return None
 
     def resize(self, new_capacity):
         """
@@ -113,7 +203,30 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        # Your code here - O(n)
+        old_arr = self.hash_table_list
+        self.hash_table_list = [HashTableEntry(None, None)] * int(new_capacity)
+
+        for el in old_arr:
+            self.put(el.key, el.value)
+            cur_node = el
+            
+            while cur_node:
+                self.put(cur_node.key, cur_node.value)
+                cur_node = cur_node.next
+             
+            ## Verbose implementation
+            # if el.next:
+            #     traversing = True
+            #     cur_node = el.next
+            #     while traversing:
+            #         self.put(cur_node.key, cur_node.value)
+            #         if cur_node.next:
+            #             cur_node = cur_node.next
+            #         else:
+            #             traversing = False
+                
+
 
 
 

@@ -1,7 +1,23 @@
+
+
 def word_count(s):
     # Your code here
-
-
+    obj = {}
+    no_punc = s
+    # initializing punctuations string  
+    punc = r'":;,.-+=/\\|[]{}()*^&'
+     
+    for ele in no_punc:  
+        if ele in punc:  
+            no_punc = no_punc.replace(ele, "")
+    
+    my_list = no_punc.split()
+    for word in my_list:
+        if not word.lower() in obj:
+            obj[word.lower()] = 0
+        obj[word.lower()] += 1
+    return obj
+            
 
 if __name__ == "__main__":
     print(word_count(""))
